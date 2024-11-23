@@ -1,0 +1,324 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+    background: #f8f9fa;
+    color: #212529;
+    min-height: 100vh;
+    padding: 1rem;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    background: white;
+    padding: 1.8rem;
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+.brand {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.brand h1 {
+    font-size: clamp(1.8rem, 3vw, 2.2rem);
+    font-weight: 700;
+    color: #007AFF;
+    letter-spacing: -0.5px;
+}
+
+.tagline {
+    font-size: clamp(0.9rem, 1.5vw, 1rem);
+    color: #8E8E93;
+    font-weight: 400;
+}
+
+button {
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 8px;
+    background: #007AFF;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 500;
+    font-size: clamp(0.9rem, 1.5vw, 1rem);
+}
+
+button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0,122,255,0.2);
+}
+
+#stopwatchContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+    padding: 0.5rem;
+}
+
+.stopwatch {
+    background: white;
+    padding: 1.2rem;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    height: fit-content;
+}
+
+.stopwatch.running {
+    border-left: 4px solid #34C759;
+}
+
+.stopwatch.stopped {
+    border-left: 4px solid #FF3B30;
+}
+
+.stopwatch-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.stopwatch input {
+    border: none;
+    background: transparent;
+    font-size: clamp(0.9rem, 1.5vw, 1rem);
+    padding: 0.5rem;
+    width: 100%;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.stopwatch input:focus {
+    background: #f8f9fa;
+    outline: none;
+}
+
+.time {
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    font-weight: 600;
+    font-family: monospace;
+    text-align: center;
+    color: #1a1a1a;
+    padding: 1rem 0;
+}
+
+.running .time {
+    color: #34C759;
+}
+
+.controls {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.controls button {
+    padding: 0.5rem 1rem;
+    flex: 1;
+    min-width: 80px;
+    max-width: 120px;
+}
+
+.controls button.start {
+    background: #34C759;
+}
+
+.controls button.stop {
+    background: #FF3B30;
+}
+
+.controls button.remove {
+    background: #8E8E93;
+}
+
+.controls button.reset {
+    background: #FF9500;
+}
+
+.controls button.reset:hover {
+    background: #F08300;
+}
+
+.status-indicator {
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    white-space: nowrap;
+}
+
+.running .status-indicator {
+    background: #34C75922;
+    color: #34C759;
+}
+
+.stopped .status-indicator {
+    background: #FF3B3022;
+    color: #FF3B30;
+}
+
+/* Tablet Specific Styles */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .container {
+        padding: 0 2rem;
+    }
+    
+    #stopwatchContainer {
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 1.5rem;
+    }
+    
+    .stopwatch {
+        padding: 1.5rem;
+    }
+    
+    .controls {
+        gap: 0.8rem;
+    }
+    
+    .controls button {
+        padding: 0.8rem 1.2rem;
+    }
+}
+
+/* Mobile Styles */
+@media (max-width: 767px) {
+    .container {
+        padding: 0 1rem;
+    }
+    
+    .header {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+    
+    #stopwatchContainer {
+        grid-template-columns: 1fr;
+    }
+    
+    .controls button {
+        padding: 0.8rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) {
+    button {
+        padding: 0.8rem 1.5rem; /* Larger touch targets */
+    }
+    
+    .stopwatch input {
+        font-size: 1rem;
+        padding: 0.8rem;
+    }
+    
+    .controls {
+        gap: 0.8rem;
+    }
+}
+
+/* Update favicon color in browser tab */
+link[rel="icon"] {
+    color: #007AFF;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 400px;
+    animation: modalAppear 0.3s ease;
+}
+
+@keyframes modalAppear {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal h3 {
+    margin-bottom: 1rem;
+    color: #1a1a1a;
+}
+
+.modal p {
+    margin-bottom: 1.5rem;
+    color: #666;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 0.8rem;
+    justify-content: flex-end;
+}
+
+.modal-buttons button {
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+}
+
+.modal-buttons .cancel {
+    background: #8E8E93;
+}
+
+.modal-buttons .confirm {
+    background: #FF3B30;
+}
+
+/* Make modal buttons larger on touch devices */
+@media (hover: none) {
+    .modal-buttons button {
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+    }
+    
+    .modal {
+        padding: 1.8rem;
+    }
+} 
