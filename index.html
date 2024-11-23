@@ -13,10 +13,15 @@
                 <h1>TimeFlow</h1>
                 <span class="tagline">Track time, seamlessly</span>
             </div>
-            <button id="addStopwatch">+ New Timer</button>
+            <div class="header-buttons">
+                <button id="exportReport">Export Report</button>
+                <button id="clearTimers" class="danger">Clear All</button>
+                <button id="addStopwatch">+ New Timer</button>
+            </div>
         </div>
         <div id="stopwatchContainer"></div>
     </div>
+    <script src="https://cdn.sheetjs.com/xlsx-0.19.3/package/dist/xlsx.full.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html> 

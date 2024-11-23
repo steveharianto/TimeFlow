@@ -52,6 +52,10 @@ class StopwatchApp {
         window.addEventListener('beforeunload', () => {
             this.saveToSession();
         });
+
+        // Add new event listeners
+        document.getElementById('exportReport').addEventListener('click', () => this.exportReport());
+        document.getElementById('clearTimers').addEventListener('click', () => this.confirmClearAll());
     }
 
     setupEventListeners() {
@@ -243,6 +247,77 @@ class StopwatchApp {
             minutes.toString().padStart(2, '0')}:${
             seconds.toString().padStart(2, '0')}.${
             centiseconds.toString().padStart(2, '0')}`;
+    }
+
+    confirmClearAll() {
+        const modalHTML = `
+            <div class="modal-overlay">
+                <div class="modal">
+                    <h3>Clear All Timers</h3>
+                    <p>Are you sure you want to remove all timers? This action cannot be undone.</p>
+                    <div class="modal-buttons">
+                        <button class="cancel">Cancel</button>
+                        <button class="confirm">Clear All</button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        const modalElement = document.createElement('div');
+        modalElement.innerHTML = modalHTML;
+        document.body.appendChild(modalElement);
+
+        const overlay = modalElement.querySelector('.modal-overlay');
+        const cancelBtn = modalElement.querySelector('.cancel');
+        const confirmBtn = modalElement.querySelector('.confirm');
+
+        const closeModal = () => modalElement.remove();
+
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) closeModal();
+        });
+        
+        cancelBtn.addEventListener('click', closeModal);
+        
+        confirmBtn.addEventListener('click', () => {
+            this.clearAllTimers();
+            closeModal();
+        });
+    }
+
+    clearAllTimers() {
+        this.stopwatches.clear();
+        document.getElementById('stopwatchContainer').innerHTML = '';
+        this.saveToSession();
+    }
+
+    exportReport() {
+        // Create workbook data
+        const data = [
+            ['Label', 'Status', 'Time (HH:MM:SS.CC)']
+        ];
+
+        this.stopwatches.forEach(stopwatch => {
+            data.push([
+                stopwatch.label,
+                stopwatch.isRunning ? 'Running' : 'Stopped',
+                this.formatTime(stopwatch.getCurrentTime())
+            ]);
+        });
+
+        // Create worksheet
+        const ws = XLSX.utils.aoa_to_sheet(data);
+
+        // Create workbook
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Timers Report');
+
+        // Generate filename with current date
+        const date = new Date().toISOString().split('T')[0];
+        const filename = `timeflow_report_${date}.xlsx`;
+
+        // Export to file
+        XLSX.writeFile(wb, filename);
     }
 }
 

@@ -321,4 +321,30 @@ link[rel="icon"] {
     .modal {
         padding: 1.8rem;
     }
+}
+
+.header-buttons {
+    display: flex;
+    gap: 0.8rem;
+    align-items: center;
+}
+
+button#exportReport {
+    background: #5856D6;
+}
+
+button#clearTimers {
+    background: #FF3B30;
+}
+
+/* Mobile Styles */
+@media (max-width: 767px) {
+    .header-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .header-buttons button {
+        width: 100%;
+    }
 } 
