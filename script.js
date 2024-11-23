@@ -56,6 +56,7 @@ class StopwatchApp {
         // Add new event listeners
         document.getElementById('exportReport').addEventListener('click', () => this.exportReport());
         document.getElementById('clearTimers').addEventListener('click', () => this.confirmClearAll());
+        this.setupHeaderToggle();
     }
 
     setupEventListeners() {
@@ -318,6 +319,52 @@ class StopwatchApp {
 
         // Export to file
         XLSX.writeFile(wb, filename);
+    }
+
+    setupHeaderToggle() {
+        const header = document.querySelector('.header');
+        const adminButtons = document.querySelector('.admin-buttons');
+        let isAnimating = false;
+        
+        header.addEventListener('click', (e) => {
+            // Prevent toggle when clicking buttons or input fields
+            if (e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT' || isAnimating) {
+                return;
+            }
+            
+            isAnimating = true;
+            adminButtons.classList.toggle('visible');
+            
+            const buttons = adminButtons.querySelectorAll('button');
+            buttons.forEach((button, index) => {
+                button.style.opacity = '0';
+                button.style.transform = 'translateY(-20px)';
+                
+                if (adminButtons.classList.contains('visible')) {
+                    setTimeout(() => {
+                        button.style.transition = 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                        button.style.opacity = '1';
+                        button.style.transform = 'translateY(0)';
+                    }, 100 + (index * 100));
+                }
+            });
+
+            setTimeout(() => {
+                isAnimating = false;
+            }, 400);
+        });
+
+        // Optional: Close admin buttons when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!header.contains(e.target) && adminButtons.classList.contains('visible')) {
+                adminButtons.classList.remove('visible');
+                const buttons = adminButtons.querySelectorAll('button');
+                buttons.forEach(button => {
+                    button.style.opacity = '0';
+                    button.style.transform = 'translateY(-20px)';
+                });
+            }
+        });
     }
 }
 
